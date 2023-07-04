@@ -1,0 +1,165 @@
+#!/bin/bash
+#SBATCH --partition=single
+#SBATCH --ntasks-per-node=40
+#SBATCH --time=5:30:30
+#SBATCH --mem=40gb
+#SBATCH --signal=B:TERM@180
+#SBATCH --output=R-o-cpu%x.%j.out
+#SBATCH --error=R-e-cpu%x.%j.err
+
+trap 'echo signal recieved in BATCH!; kill -15 "${PID}"; wait "${PID}";' SIGINT SIGTERM
+source ~/.bashrc
+conda activate 310
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_3_tr_1_rep0 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 3 -tr 1 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_3_tr_2_rep0 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 3 -tr 2 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_3_tr_3_rep0 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 3 -tr 3 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_3_tr_4_rep0 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 3 -tr 4 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_3_tr_10_rep0 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 3 -tr 10 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_4_tr_1_rep0 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 4 -tr 1 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_4_tr_2_rep0 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 4 -tr 2 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_4_tr_3_rep0 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 4 -tr 3 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_4_tr_4_rep0 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 4 -tr 4 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_4_tr_10_rep0 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 4 -tr 10 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_5_tr_1_rep0 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 5 -tr 1 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_5_tr_2_rep0 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 5 -tr 2 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_5_tr_3_rep0 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 5 -tr 3 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_5_tr_4_rep0 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 5 -tr 4 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_5_tr_10_rep0 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 5 -tr 10 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_3_tr_1_rep1 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 3 -tr 1 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_3_tr_2_rep1 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 3 -tr 2 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_3_tr_3_rep1 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 3 -tr 3 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_3_tr_4_rep1 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 3 -tr 4 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_3_tr_10_rep1 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 3 -tr 10 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_4_tr_1_rep1 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 4 -tr 1 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_4_tr_2_rep1 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 4 -tr 2 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_4_tr_3_rep1 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 4 -tr 3 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_4_tr_4_rep1 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 4 -tr 4 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_4_tr_10_rep1 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 4 -tr 10 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_5_tr_1_rep1 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 5 -tr 1 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_5_tr_2_rep1 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 5 -tr 2 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_5_tr_3_rep1 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 5 -tr 3 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_5_tr_4_rep1 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 5 -tr 4 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_5_tr_10_rep1 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 5 -tr 10 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_3_tr_1_rep2 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 3 -tr 1 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_3_tr_2_rep2 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 3 -tr 2 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_3_tr_3_rep2 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 3 -tr 3 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_3_tr_4_rep2 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 3 -tr 4 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_3_tr_10_rep2 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 3 -tr 10 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_4_tr_1_rep2 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 4 -tr 1 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_4_tr_2_rep2 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 4 -tr 2 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_4_tr_3_rep2 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 4 -tr 3 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_4_tr_4_rep2 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 4 -tr 4 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_4_tr_10_rep2 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 4 -tr 10 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_5_tr_1_rep2 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 5 -tr 1 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_5_tr_2_rep2 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 5 -tr 2 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_5_tr_3_rep2 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 5 -tr 3 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_5_tr_4_rep2 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 5 -tr 4 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_5_tr_10_rep2 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 5 -tr 10 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_3_tr_1_rep3 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 3 -tr 1 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_3_tr_2_rep3 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 3 -tr 2 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_3_tr_3_rep3 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 3 -tr 3 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_3_tr_4_rep3 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 3 -tr 4 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_3_tr_10_rep3 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 3 -tr 10 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_4_tr_1_rep3 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 4 -tr 1 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_4_tr_2_rep3 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 4 -tr 2 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_4_tr_3_rep3 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 4 -tr 3 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_4_tr_4_rep3 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 4 -tr 4 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_4_tr_10_rep3 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 4 -tr 10 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_5_tr_1_rep3 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 5 -tr 1 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_5_tr_2_rep3 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 5 -tr 2 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_5_tr_3_rep3 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 5 -tr 3 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_5_tr_4_rep3 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 5 -tr 4 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_5_tr_10_rep3 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 5 -tr 10 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_3_tr_1_rep4 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 3 -tr 1 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_3_tr_2_rep4 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 3 -tr 2 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_3_tr_3_rep4 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 3 -tr 3 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_3_tr_4_rep4 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 3 -tr 4 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_3_tr_10_rep4 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 3 -tr 10 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_4_tr_1_rep4 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 4 -tr 1 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_4_tr_2_rep4 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 4 -tr 2 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_4_tr_3_rep4 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 4 -tr 3 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_4_tr_4_rep4 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 4 -tr 4 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_4_tr_10_rep4 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 4 -tr 10 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_5_tr_1_rep4 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 5 -tr 1 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_5_tr_2_rep4 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 5 -tr 2 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_5_tr_3_rep4 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 5 -tr 3 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_5_tr_4_rep4 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 5 -tr 4 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_5_tr_10_rep4 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 5 -tr 10 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_3_tr_1_rep5 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 3 -tr 1 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_3_tr_2_rep5 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 3 -tr 2 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_3_tr_3_rep5 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 3 -tr 3 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_3_tr_4_rep5 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 3 -tr 4 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_3_tr_10_rep5 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 3 -tr 10 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_4_tr_1_rep5 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 4 -tr 1 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_4_tr_2_rep5 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 4 -tr 2 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_4_tr_3_rep5 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 4 -tr 3 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_4_tr_4_rep5 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 4 -tr 4 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_4_tr_10_rep5 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 4 -tr 10 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_5_tr_1_rep5 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 5 -tr 1 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_5_tr_2_rep5 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 5 -tr 2 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_5_tr_3_rep5 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 5 -tr 3 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_5_tr_4_rep5 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 5 -tr 4 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_5_tr_10_rep5 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 5 -tr 10 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_3_tr_1_rep6 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 3 -tr 1 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_3_tr_2_rep6 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 3 -tr 2 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_3_tr_3_rep6 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 3 -tr 3 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_3_tr_4_rep6 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 3 -tr 4 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_3_tr_10_rep6 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 3 -tr 10 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_4_tr_1_rep6 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 4 -tr 1 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_4_tr_2_rep6 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 4 -tr 2 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_4_tr_3_rep6 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 4 -tr 3 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_4_tr_4_rep6 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 4 -tr 4 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_4_tr_10_rep6 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 4 -tr 10 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_5_tr_1_rep6 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 5 -tr 1 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_5_tr_2_rep6 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 5 -tr 2 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_5_tr_3_rep6 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 5 -tr 3 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_5_tr_4_rep6 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 5 -tr 4 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_5_tr_10_rep6 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 5 -tr 10 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_3_tr_1_rep7 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 3 -tr 1 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_3_tr_2_rep7 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 3 -tr 2 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_3_tr_3_rep7 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 3 -tr 3 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_3_tr_4_rep7 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 3 -tr 4 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_3_tr_10_rep7 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 3 -tr 10 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_4_tr_1_rep7 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 4 -tr 1 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_4_tr_2_rep7 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 4 -tr 2 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_4_tr_3_rep7 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 4 -tr 3 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_4_tr_4_rep7 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 4 -tr 4 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_4_tr_10_rep7 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 4 -tr 10 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_5_tr_1_rep7 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 5 -tr 1 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_5_tr_2_rep7 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 5 -tr 2 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_5_tr_3_rep7 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 5 -tr 3 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_5_tr_4_rep7 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 5 -tr 4 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_5_tr_10_rep7 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 5 -tr 10 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_3_tr_1_rep8 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 3 -tr 1 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_3_tr_2_rep8 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 3 -tr 2 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_3_tr_3_rep8 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 3 -tr 3 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_3_tr_4_rep8 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 3 -tr 4 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_3_tr_10_rep8 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 3 -tr 10 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_4_tr_1_rep8 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 4 -tr 1 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_4_tr_2_rep8 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 4 -tr 2 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_4_tr_3_rep8 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 4 -tr 3 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_4_tr_4_rep8 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 4 -tr 4 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_4_tr_10_rep8 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 4 -tr 10 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_5_tr_1_rep8 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 5 -tr 1 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_5_tr_2_rep8 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 5 -tr 2 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_5_tr_3_rep8 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 5 -tr 3 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_5_tr_4_rep8 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 5 -tr 4 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_5_tr_10_rep8 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 5 -tr 10 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_3_tr_1_rep9 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 3 -tr 1 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_3_tr_2_rep9 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 3 -tr 2 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_3_tr_3_rep9 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 3 -tr 3 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_3_tr_4_rep9 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 3 -tr 4 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_3_tr_10_rep9 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 3 -tr 10 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_4_tr_1_rep9 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 4 -tr 1 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_4_tr_2_rep9 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 4 -tr 2 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_4_tr_3_rep9 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 4 -tr 3 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_4_tr_4_rep9 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 4 -tr 4 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_4_tr_10_rep9 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 4 -tr 10 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_5_tr_1_rep9 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 5 -tr 1 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_5_tr_2_rep9 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 5 -tr 2 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_5_tr_3_rep9 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 5 -tr 3 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_5_tr_4_rep9 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 5 -tr 4 -pad 5 -i 0 -s 1000 &
+python /home/hd/hd_hd/hd_hq183/code/TDVQE/runme.py -n /home/hd/hd_hd/hd_hq183/code/TDVQE/results/depth_trotter_an/d_5_tr_10_rep9 -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.1 -L 19 -p 0 -d 5 -tr 10 -pad 5 -i 0 -s 1000 &
+wait
+PID="$!"
+wait "${PID}"
