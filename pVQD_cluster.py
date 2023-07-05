@@ -502,7 +502,7 @@ class pVQD:
         log_data["parameterized"] = initial_parameters["parameterized"]
         log_data["padding"] = initial_parameters["padding"]
         log_data["fidelity_to_ideal"] = []
-        log_data["fidelity_to_exact"] = [1]
+        log_data["fidelity_to_exact"] = [1] #simulator and QC are setup to start with the same WF, so hardcoding this is ok
         log_data["QC_energy_Tnuc"] = []
         log_data["QC_energy_Vnuc"] = []
         log_data["QC_coefficients"] = []
