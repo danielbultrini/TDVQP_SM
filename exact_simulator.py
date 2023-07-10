@@ -66,7 +66,7 @@ class simulation:
         x_0=-9.0,
         v_0=0.0,
         vector=None,
-        parameterized=True,
+        parameterized=False,
         padding=10,
     ) -> None:
         self.r_f, self.r_l, self.r_r = r_f, r_l, r_r

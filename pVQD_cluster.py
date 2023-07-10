@@ -555,7 +555,7 @@ class pVQD:
             x_0=initial_parameters["position"],
             v_0=initial_parameters["velocity"],
             vector=qc_WF,
-            parameterized=initial_parameters["parameterized"],
+            # parameterized=initial_parameters["parameterized"],
             padding=initial_parameters["padding"],
         )
 
