@@ -488,6 +488,7 @@ class pVQD:
             "padding": 10,
         },
         trotter_steps=1,
+        i = 0
     ):
         log_data = {}
         log_data["QC_energy_el"] = []
@@ -709,7 +710,6 @@ class pVQD:
         )  # x_1
 
         params.append(list(self.parameters))
-        i = 0
         ###################
         # compute f1
         state_wfn = self.construct_total_circuit(
