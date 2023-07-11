@@ -165,7 +165,6 @@ def pvqd_experiment(
         backend = Aer.get_backend(backend)
         instance = QuantumInstance(backend=backend, shots=shots)
         obs = {"force": el_force, "energy": hamiltonian}
-        i = 0
         if parameterized == 0:
             parameterized = False
         elif parameterized == 1:
@@ -236,7 +235,6 @@ def pvqd_experiment(
                 L = d["L"]
                 trotter_steps = d['trotter_steps']
                 padding = d['padding']
-                i = d['final_i']
 
             all = prep_ham(x_0, r_f, r_l, r_r, resolution, L, padding=padding)
             H = all[0]
@@ -290,7 +288,6 @@ def pvqd_experiment(
                 "padding": padding,
             },
             trotter_steps=trotter_steps,
-            i = i
         )
     if md == 0:
         run(    shots,
@@ -314,8 +311,7 @@ def pvqd_experiment(
                 parameterized,
                 padding,
                 restart,
-                backend,
-                i = i)
+                backend)
     else: 
         base_name = name
         # generate two lists of random values with normal distributions
@@ -357,7 +353,6 @@ def pvqd_experiment(
                 padding,
                 restart,
                 backend,
-                i = i
 )
 
     
