@@ -225,13 +225,13 @@ def pvqd_experiment(
             print(f"restarting from {restart}")
             with open(restart) as data:
                 d = json.load(data)
-                initial_point = np.array(d["params"][-1])
+                initial_point = np.array(d["params"][0])
                 dt = d['dt']
                 r_f = d["r_f"]
                 r_l = d["r_l"]
                 r_r = d["r_r"]
-                x_0 = d["ideal_positions"][-1]
-                v_0 = d["ideal_velocities"][-1]
+                x_0 = d["ideal_positions"][0]
+                v_0 = d["ideal_velocities"][0]
                 resolution = d["res"]
                 L = d["L"]
                 trotter_steps = d['trotter_steps']
@@ -314,9 +314,8 @@ def pvqd_experiment(
                 parameterized,
                 padding,
                 restart,
-                backend.
-                i = i
-)
+                backend,
+                i = i)
     else: 
         base_name = name
         # generate two lists of random values with normal distributions
