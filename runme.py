@@ -163,7 +163,7 @@ def pvqd_experiment(
                 backend
 ):
         backend = Aer.get_backend(backend)
-        instance = QuantumInstance(backend=backend, shots=shots)
+        instance = QuantumInstance(backend=backend, shots=shots, max_parallel_threads=1)
         obs = {"force": el_force, "energy": hamiltonian}
         if parameterized == 0:
             parameterized = False
