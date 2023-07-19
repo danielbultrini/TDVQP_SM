@@ -35,9 +35,6 @@ def prepare_state(r_f, r_l, r_r, resolution=500, L=19, padding=10):
         nel=resolution,
         padding=padding,
     )
-    # steps = resolution
-    # dx = L / (steps + 1)
-    # L2 = L / 2 - 1e-5#- dx/1000
     xgrid = full.rr
     return full, xgrid
 
@@ -68,6 +65,7 @@ class simulation:
         vector=None,
         parameterized=False,
         padding=10,
+        obs_error = 0 # multiplicative factor - 0 for no error
     ) -> None:
         self.r_f, self.r_l, self.r_r = r_f, r_l, r_r
         self.L = L
@@ -120,6 +118,7 @@ class simulation:
             f_0 = f_0nuc
         else:
             f_0 = f_0el + f_0nuc
+        f_0 += f_0*obs_error
         self.store_energy_el[0] = is_real(inner(psi_init, H_0))
         self.store_energy_Vnuc[0] = V_nuc_0
         self.store_energy_Tnuc[0] = 0.5 * m * (v_0**2)
@@ -145,7 +144,7 @@ class simulation:
             f_1 = f_1nuc  # t1
         else:
             f_1 = f_1el + f_1nuc
-
+        f_1 += f_1*obs_error
         propagator = Q_1 @ np.diag(np.exp(-1j * En_1 * dt)) @ Q_1.T  # t1
         v_1 = v_0 + dt * (f_0 + f_1) / 2
         self.store_energy_el[1] = is_real(inner(psi_1, H_1))
@@ -193,6 +192,7 @@ class simulation:
                 self.store_f[i + 1] = is_real(
                     self.store_fel[i + 1] + self.store_fnuc[i + 1]
                 )
+                self.store_f[i + 1] += self.store_f[i + 1]*obs_error
             self.store_v[i + 1] = is_real(
                 self.store_v[i] + dt * (self.store_f[i] + self.store_f[i + 1]) / 2
             )
@@ -236,3 +236,4 @@ class simulation:
                 padding=padding,
             )
             self.store_eigen_pos[i] = En
+        
