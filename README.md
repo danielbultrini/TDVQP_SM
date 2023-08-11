@@ -53,6 +53,12 @@ The easiest way to generate results is to use the `runme.py` file with arguments
 "-b" qiskit backend. use statevector_simulator for infinite shot limit and qasm_simulator when using non-zero shots. 
 
 
+For the standard simulation of a ground state as in the paper, you would use this command in this folder:
+
+`python runme.py -n /results/new -x -2 -v 0.2 -rf 5 -rl 4 -rr 3.2 -L 19 -p 0 -d 4 -tr 1 -pad 20 -i 0 -s 1000`
+
+
+
 To run this, the most critical requirement is to use qiskit 0.22.1. Other libraries are not expected to have much of an impact on performance, but the versions are provided below:
 
 Specific library versions used in the generation of the original figures:
