@@ -1,5 +1,14 @@
 ##### your own files here
 initial_plan.ipynb
+results/
+results_supp/
+results_hitch/
+old_results/
+plots/
+custom_plots/
+custom_plots_short/
+additional_plots/
+slurm_files/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

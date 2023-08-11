@@ -450,7 +450,7 @@ def S8to10_loader():
     fin_files = 0
     for i in range(0, numfiles):
         try:
-            file = f"results_incomplete/LONGMD/long_MD{i}.json"
+            file = f"results_supp/LONGMD/long_MD{i}.json"
             #file = f"results/unknown/trycorrect{i}.json"
             data = json.load(open(file))
             results.append(data)
@@ -551,7 +551,7 @@ def S8to10_loader():
     fin_files = 0
     for i in range(0, numfiles):
         try:
-            file = f"results_incomplete/LONG/long_vqd{i}.json"
+            file = f"results_supp/LONG/long_vqd{i}.json"
             #file = f"results/unknown/trycorrect{i}.json"
             data = json.load(open(file))
             results.append(data)
@@ -758,7 +758,7 @@ def S13S14_loader():
     fin_files = 0
     for i in range(0, numfiles):
         try:
-            file = f"results_incomplete/mixed/mixed_{i}.json"
+            file = f"results_supp/mixed/mixed_{i}.json"
             #file = f"results/unknown/trycorrect{i}.json"
             data = json.load(open(file))
             results.append(data)
@@ -858,7 +858,7 @@ def S13S14_loader():
     fin_files = 0
     for i in range(0, numfiles):
         try:
-            file = f"results_incomplete/mixed2/first_excited_{i}.json"
+            file = f"results_supp/mixed2/first_excited_{i}.json"
             #file = f"results/unknown/trycorrect{i}.json"
             data = json.load(open(file))
             results.append(data)
