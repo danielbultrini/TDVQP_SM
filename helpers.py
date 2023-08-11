@@ -1,6 +1,17 @@
+import warnings
+warnings.filterwarnings("ignore")
 import json 
 import pandas as pd
 import numpy as np
+from typing import Tuple, Any, Type, Union
+import matplotlib.pyplot as plt
+import copy as cp
+from scipy.special import erf
+from scipy.linalg import eigvalsh_tridiagonal, eigvalsh
+
+
+ArrayLike = Type[np.ndarray]
+DtypeLike = Union[np.float64, np.complex128]
 
 def read_files(numfiles,max_times,basename,ending='json'):
     results = []
@@ -266,3 +277,678 @@ def load_final_results():
     dfscoef = pd.concat([df_coef1,df_coef2,df_coef3,df_coef4,df_coef5,udf_coef1,udf_coef2,udf_coef3,udf_coef4,udf_coef5
                         ,mdf_coef1,mdf_coef2,mdf_coef3,mdf_coef4,mdf_coef5])
     return dfs, dfscoef
+
+
+def soft_coulomb(r12: ArrayLike, gamma: DtypeLike) -> ArrayLike:
+    abs_r12 = np.abs(r12)
+    sc = erf(abs_r12 / gamma) / abs_r12
+    if np.any(np.isnan(sc)):
+        sc = np.nan_to_num(sc, nan=2 / np.sqrt((gamma**2) * np.pi))
+    return sc  # *np.sqrt(np.pi)/2
+
+
+def run_sm(L=19, Rf=5, Rr=3.1, Rl=4, res=512) -> ArrayLike:
+
+    rr = np.linspace(-(L + 40) / 2, (L + 40) / 2, num=res)
+
+    def V(R, r):
+        v_en = soft_coulomb(R - r, Rf)
+        v_le = soft_coulomb(r + L / 2, Rl)
+        v_re = soft_coulomb(r - L / 2, Rr)
+        v0 = (1.0 / np.abs(L / 2 - R)) + (1.0 / np.abs(L / 2 + R))
+        if np.isinf(v0) or v0 > 100000:
+            v0 = 100000
+        return v0 + (-1 * v_en) + (-1 * v_le) + (-1 * v_re)
+
+    def H_el(R, rr):
+        nr = len(rr)
+        dr = rr[1] - rr[0]
+        kinetic_factor = -(0.5 / (dr**2))
+        vv = (kinetic_factor * (-2)) + V(R, rr)
+        off_diag = kinetic_factor * np.ones(nr - 1, dtype=np.float64)
+        return vv, off_diag
+
+    space = np.zeros((res, res))
+    for i, R in enumerate(rr):
+        diag, off_diag = H_el(R, rr)
+        space[i] = eigvalsh_tridiagonal(diag, off_diag)
+
+    return space, rr
+
+def plot_SM(r_f, r_l, r_r, L, res):
+    space, rr = run_sm()
+    plt.plot(rr, space[:, 0])
+    plt.plot(rr, space[:, 1])
+    plt.plot(rr, space[:, 2])
+    plt.plot(rr, space[:, 3])
+    plt.plot(rr, space[:, 4])
+
+    plt.xlim(-5, 5)
+    plt.ylim(-0.275,-0.17)
+    plt.ylim()
+    plt.show()
+    
+    
+def S5_loader():
+    numfiles = 150
+    max_times =700
+    results = []
+    dfs = []
+    fin_files = 0
+    for d in range(3, 6):
+        for tr in [1,2,3,4,10]:
+            for r in range(10):
+                try:
+                    file = f"results/depth_trotter_an/d_{d}_tr_{tr}_rep{r}.json"
+                    data = json.load(open(file))
+                    if data['final_i'] < 1000:
+                        print('not_complte')
+                        raise('not complete')
+                    results.append(data)
+                    for j in ['QC','ideal','exact']:
+                        datadf = pd.DataFrame(data[f'{j}_coefficients'])
+                        datadf = datadf.reset_index()
+                        datadf = datadf.melt(id_vars='index',var_name='Adiabatic state',value_name='Population')
+                        datadf['Setup:'] = f'{j}'
+                        datadf['sample'] = fin_files
+                        datadf['Depth'] = data['depth']
+                        datadf['Trotter Steps'] = data['trotter_steps']
+                        datadf['Time'] = datadf['index']*data['dt']
+                        dfs.append(datadf)
+                    fin_files+=1
+                except:
+                    print(f"didn't find {d},{tr},{r}")
+    numfiles=fin_files
+    datadf = pd.concat(dfs,ignore_index=True)
+    stuff = [
+        "fidelity_to_ideal",
+        "fidelity_to_exact",
+        "ideal_forces_el",
+        "ideal_forces_nuc",
+        "ideal_tot_forces",
+        "ideal_velocities",
+        "ideal_positions",
+        "ideal_energy_el",
+        "ideal_energy_Tnuc",
+        "ideal_energy_Vnuc",
+        "exact_forces_el",
+        "exact_forces_nuc",
+        "exact_tot_forces",
+        "exact_velocities",
+        "exact_positions",
+        "exact_energy_el",
+        "exact_energy_Tnuc",
+        "exact_energy_Vnuc",
+        "QC_forces_el",
+        "QC_forces_nuc",
+        "QC_tot_forces",
+        "QC_velocities",
+        "QC_positions",
+        "QC_energy_el",
+        "QC_energy_Tnuc",
+        "QC_energy_Vnuc",
+        "force",
+        "err_force",
+        "energy",
+        "err_energy",
+        "init_F",
+        "final_F",
+        "err_init_F",
+        "err_fin_F",
+        "iter_number",
+        "times",
+        'depth',
+        'trotter_steps'
+    ]
+
+    store = {i: [] for i in stuff}
+    store["sample"] = []
+
+    for i in range(numfiles):
+        for j in stuff:
+            try:
+                store[j].extend(results[i][j][0:max_times])
+            except:
+                store[j].extend([results[i][j]]*max_times)
+            
+            # print(len(store[j]))
+        store["sample"].extend([i] * max_times)
+    # print(len(store["sample"]))
+
+    df = pd.DataFrame(store)
+    df["diff_ideal_exact"] = np.abs(df["fidelity_to_exact"] - df["fidelity_to_ideal"])
+    df['QC_energy'] = df['QC_energy_el']+df['QC_energy_Vnuc']+df['QC_energy_Tnuc']
+    df['ideal_energy'] = df['ideal_energy_el']+df['ideal_energy_Vnuc']+df['ideal_energy_Tnuc']
+    df['exact_energy'] = df['exact_energy_el']+df['exact_energy_Vnuc']+df['exact_energy_Tnuc']
+
+    coeff_names  ={'exact_coefficients':'Exact',
+    'ideal_coefficients':'Ideal',
+    'QC_coefficients': 'TDVQP'}
+
+    store_coef = {coeff_names[i]: [] for i in coeff_names}
+    store_coef['Time'] = []
+    store_coef['State'] = []
+    store_coef["Sample"] = []
+    for i in range(numfiles):
+        for j in coeff_names:
+            for k, res in enumerate(results[i][j][0:max_times]):        
+                store_coef[coeff_names[j]].extend(res[0:15]) # only really need highest 5 populations even in larger simulations with superpositions.
+                if j == 'exact_coefficients':
+                    store_coef['Time'].extend([results[i]['times'][k]]*15)
+                    store_coef["Sample"].extend([i] * 15)
+                    store_coef['State'].extend(list(range(15)))
+                    
+    df_coef = pd.DataFrame(store_coef).melt(id_vars=('Time','State','Sample'),value_name='Population',var_name='Type')
+    df = df.rename({'depth':'Depth','trotter_steps':'Trotter Steps'}, axis='columns')
+    return df, df_coef
+
+def S8to10_loader():
+    numfiles = 502
+    max_times =700
+    results = []
+    dfs = []
+    fin_files = 0
+    for i in range(0, numfiles):
+        try:
+            file = f"results_incomplete/LONGMD/long_MD{i}.json"
+            #file = f"results/unknown/trycorrect{i}.json"
+            data = json.load(open(file))
+            results.append(data)
+            for j in ['QC','ideal','exact']:
+                datadf = pd.DataFrame(data[f'{j}_coefficients'])
+                datadf=datadf.reset_index()
+                datadf = datadf.melt(id_vars='index',var_name='Adiabatic state',value_name='Population')
+                datadf['Setup:'] = f'{j}'
+                datadf['sample'] = i
+                datadf['Time'] = datadf['index']*data['dt']
+                dfs.append(datadf)
+            fin_files+=1
+        except:
+            pass
+    numfiles=fin_files
+    datadf = pd.concat(dfs,ignore_index=True)
+    stuff = [
+        "fidelity_to_ideal",
+        "fidelity_to_exact",
+        "ideal_forces_el",
+        "ideal_forces_nuc",
+        "ideal_tot_forces",
+        "ideal_velocities",
+        "ideal_positions",
+        "ideal_energy_el",
+        "ideal_energy_Tnuc",
+        "ideal_energy_Vnuc",
+        "exact_forces_el",
+        "exact_forces_nuc",
+        "exact_tot_forces",
+        "exact_velocities",
+        "exact_positions",
+        "exact_energy_el",
+        "exact_energy_Tnuc",
+        "exact_energy_Vnuc",
+        "QC_forces_el",
+        "QC_forces_nuc",
+        "QC_tot_forces",
+        "QC_velocities",
+        "QC_positions",
+        "QC_energy_el",
+        "QC_energy_Tnuc",
+        "QC_energy_Vnuc",
+        "force",
+        "err_force",
+        "energy",
+        "err_energy",
+        "init_F",
+        "final_F",
+        "err_init_F",
+        "err_fin_F",
+        "iter_number",
+        "times",
+    ]
+
+    store = {i: [] for i in stuff}
+    store["sample"] = []
+
+    for i in range(numfiles):
+        for j in stuff:
+            store[j].extend(results[i][j][0:max_times])
+            # print(len(store[j]))
+        store["sample"].extend([i] * max_times)
+    # print(len(store["sample"]))
+
+    df = pd.DataFrame(store)
+    df["diff_ideal_exact"] = np.abs(df["fidelity_to_exact"] - df["fidelity_to_ideal"])
+    df['QC_energy'] = df['QC_energy_el']+df['QC_energy_Vnuc']+df['QC_energy_Tnuc']
+    df['QC_energy'] = df['QC_energy']-df['QC_energy'][0]
+    df['ideal_energy'] = df['ideal_energy_el']+df['ideal_energy_Vnuc']+df['ideal_energy_Tnuc']
+    df['ideal_energy'] = df['ideal_energy']-df['ideal_energy'][0]
+    df['exact_energy'] = df['exact_energy_el']+df['exact_energy_Vnuc']+df['exact_energy_Tnuc']
+
+    coeff_names  ={'exact_coefficients':'Exact',
+    'ideal_coefficients':'Ideal',
+    'QC_coefficients': 'TDVQP'}
+
+    store_coef = {coeff_names[i]: [] for i in coeff_names}
+    store_coef['Time'] = []
+    store_coef['State'] = []
+    store_coef["Sample"] = []
+    for i in range(numfiles):
+        for j in coeff_names:
+            for k, res in enumerate(results[i][j][0:max_times]):        
+                store_coef[coeff_names[j]].extend(res[0:15]) # only really need highest 5 populations even in larger simulations with superpositions.
+                if j == 'exact_coefficients':
+                    store_coef['Time'].extend([results[i]['times'][k]]*15)
+                    store_coef["Sample"].extend([i] * 15)
+                    store_coef['State'].extend(list(range(15)))
+                    
+    df_coef = pd.DataFrame(store_coef).melt(id_vars=('Time','State','Sample'),value_name='Population',var_name='Type')
+    df['Simulation'] = 'MD'
+    df_coef['Simulation'] = 'MD'
+
+    numfiles = 502
+    results = []
+    dfs = []
+    fin_files = 0
+    for i in range(0, numfiles):
+        try:
+            file = f"results_incomplete/LONG/long_vqd{i}.json"
+            #file = f"results/unknown/trycorrect{i}.json"
+            data = json.load(open(file))
+            results.append(data)
+            for j in ['QC','ideal','exact']:
+                datadf = pd.DataFrame(data[f'{j}_coefficients'])
+                datadf=datadf.reset_index()
+                datadf = datadf.melt(id_vars='index',var_name='Adiabatic state',value_name='Population')
+                datadf['Setup:'] = f'{j}'
+                datadf['sample'] = i
+                datadf['Time'] = datadf['index']*data['dt']
+                dfs.append(datadf)
+            fin_files+=1
+        except:
+            pass
+    numfiles=fin_files
+    datadf = pd.concat(dfs,ignore_index=True)
+    stuff = [
+        "fidelity_to_ideal",
+        "fidelity_to_exact",
+        "ideal_forces_el",
+        "ideal_forces_nuc",
+        "ideal_tot_forces",
+        "ideal_velocities",
+        "ideal_positions",
+        "ideal_energy_el",
+        "ideal_energy_Tnuc",
+        "ideal_energy_Vnuc",
+        "exact_forces_el",
+        "exact_forces_nuc",
+        "exact_tot_forces",
+        "exact_velocities",
+        "exact_positions",
+        "exact_energy_el",
+        "exact_energy_Tnuc",
+        "exact_energy_Vnuc",
+        "QC_forces_el",
+        "QC_forces_nuc",
+        "QC_tot_forces",
+        "QC_velocities",
+        "QC_positions",
+        "QC_energy_el",
+        "QC_energy_Tnuc",
+        "QC_energy_Vnuc",
+        "force",
+        "err_force",
+        "energy",
+        "err_energy",
+        "init_F",
+        "final_F",
+        "err_init_F",
+        "err_fin_F",
+        "iter_number",
+        "times",
+    ]
+
+    store = {i: [] for i in stuff}
+    store["sample"] = []
+
+    for i in range(numfiles):
+        for j in stuff:
+            store[j].extend(results[i][j][0:max_times])
+            # print(len(store[j]))
+        store["sample"].extend([i] * max_times)
+    # print(len(store["sample"]))
+
+    df2 = pd.DataFrame(store)
+    df2["diff_ideal_exact"] = np.abs(df2["fidelity_to_exact"] - df2["fidelity_to_ideal"])
+    df2['QC_energy'] = df2['QC_energy_el']+df2['QC_energy_Vnuc']+df2['QC_energy_Tnuc']
+    df2['QC_energy'] = df2['QC_energy'] -df2['QC_energy'][0]
+    df2['ideal_energy'] = df2['ideal_energy_el']+df2['ideal_energy_Vnuc']+df2['ideal_energy_Tnuc']
+    df2['ideal_energy'] = df2['ideal_energy'] -df2['ideal_energy'][0]
+    df2['exact_energy'] = df2['exact_energy_el']+df2['exact_energy_Vnuc']+df2['exact_energy_Tnuc']
+
+    coeff_names  ={'exact_coefficients':'Exact',
+    'ideal_coefficients':'Ideal',
+    'QC_coefficients': 'TDVQP'}
+
+    store_coef = {coeff_names[i]: [] for i in coeff_names}
+    store_coef['Time'] = []
+    store_coef['State'] = []
+    store_coef["Sample"] = []
+    for i in range(numfiles):
+        for j in coeff_names:
+            for k, res in enumerate(results[i][j][0:max_times]):        
+                store_coef[coeff_names[j]].extend(res[0:15]) # only really need highest 5 populations even in larger simulations with superpositions.
+                if j == 'exact_coefficients':
+                    store_coef['Time'].extend([results[i]['times'][k]]*15)
+                    store_coef["Sample"].extend([i] * 15)
+                    store_coef['State'].extend(list(range(15)))
+                    
+    df_coef2 = pd.DataFrame(store_coef).melt(id_vars=('Time','State','Sample'),value_name='Population',var_name='Type')
+    df2['Simulation'] = 'Single'
+    df_coef2['Simulation'] = 'Single'
+
+    df = pd.concat([df,df2])
+    df_coef = pd.concat([df_coef,df_coef2])
+    return df, df_coef
+
+def S12S14_loader():
+    numfiles = 100
+    max_times =700
+    results = []
+    dfs = []
+    fin_files = 0
+    for i in range(0, numfiles):
+        try:
+            file = f"results/mixed2/first_excited_{i}.json"
+            #file = f"results/unknown/trycorrect{i}.json"
+            data = json.load(open(file))
+            results.append(data)
+            for j in ['QC','ideal','exact']:
+                datadf = pd.DataFrame(data[f'{j}_coefficients'])
+                datadf=datadf.reset_index()
+                datadf = datadf.melt(id_vars='index',var_name='Adiabatic state',value_name='Population')
+                datadf['Setup:'] = f'{j}'
+                datadf['sample'] = i
+                datadf['Time'] = datadf['index']*data['dt']
+                dfs.append(datadf)
+            fin_files+=1
+        except:
+            pass
+    numfiles=fin_files
+    datadf = pd.concat(dfs,ignore_index=True)
+    stuff = [
+        "fidelity_to_ideal",
+        "fidelity_to_exact",
+        "ideal_forces_el",
+        "ideal_forces_nuc",
+        "ideal_tot_forces",
+        "ideal_velocities",
+        "ideal_positions",
+        "ideal_energy_el",
+        "ideal_energy_Tnuc",
+        "ideal_energy_Vnuc",
+        "exact_forces_el",
+        "exact_forces_nuc",
+        "exact_tot_forces",
+        "exact_velocities",
+        "exact_positions",
+        "exact_energy_el",
+        "exact_energy_Tnuc",
+        "exact_energy_Vnuc",
+        "QC_forces_el",
+        "QC_forces_nuc",
+        "QC_tot_forces",
+        "QC_velocities",
+        "QC_positions",
+        "QC_energy_el",
+        "QC_energy_Tnuc",
+        "QC_energy_Vnuc",
+        "force",
+        "err_force",
+        "energy",
+        "err_energy",
+        "init_F",
+        "final_F",
+        "err_init_F",
+        "err_fin_F",
+        "iter_number",
+        "times",
+    ]
+
+    store = {i: [] for i in stuff}
+    store["sample"] = []
+
+    for i in range(numfiles):
+        for j in stuff:
+            store[j].extend(results[i][j][0:max_times])
+            # print(len(store[j]))
+        store["sample"].extend([i] * max_times)
+    # print(len(store["sample"]))
+
+    df = pd.DataFrame(store)
+    df["diff_ideal_exact"] = np.abs(df["fidelity_to_exact"] - df["fidelity_to_ideal"])
+    df['QC_energy'] = df['QC_energy_el']+df['QC_energy_Vnuc']+df['QC_energy_Tnuc']
+    df['ideal_energy'] = df['ideal_energy_el']+df['ideal_energy_Vnuc']+df['ideal_energy_Tnuc']
+    df['exact_energy'] = df['exact_energy_el']+df['exact_energy_Vnuc']+df['exact_energy_Tnuc']
+
+    coeff_names  ={'exact_coefficients':'Exact',
+    'ideal_coefficients':'Ideal',
+    'QC_coefficients': 'TDVQP'}
+
+    store_coef = {coeff_names[i]: [] for i in coeff_names}
+    store_coef['Time'] = []
+    store_coef['State'] = []
+    store_coef["Sample"] = []
+    for i in range(numfiles):
+        for j in coeff_names:
+            for k, res in enumerate(results[i][j][0:max_times]):        
+                store_coef[coeff_names[j]].extend(res[0:15]) # only really need highest 5 populations even in larger simulations with Exciteds.
+                if j == 'exact_coefficients':
+                    store_coef['Time'].extend([results[i]['times'][k]]*15)
+                    store_coef["Sample"].extend([i] * 15)
+                    store_coef['State'].extend(list(range(15)))
+                    
+    df_coef = pd.DataFrame(store_coef).melt(id_vars=('Time','State','Sample'),value_name='Population',var_name='Type')
+    return df, df_coef
+
+def S13S14_loader():
+    numfiles = 100
+    max_times =700
+    results = []
+    dfs = []
+    fin_files = 0
+    for i in range(0, numfiles):
+        try:
+            file = f"results_incomplete/mixed/mixed_{i}.json"
+            #file = f"results/unknown/trycorrect{i}.json"
+            data = json.load(open(file))
+            results.append(data)
+            for j in ['QC','ideal','exact']:
+                datadf = pd.DataFrame(data[f'{j}_coefficients'])
+                datadf=datadf.reset_index()
+                datadf = datadf.melt(id_vars='index',var_name='Adiabatic state',value_name='Population')
+                datadf['Setup:'] = f'{j}'
+                datadf['sample'] = i
+                datadf['Time'] = datadf['index']*data['dt']
+                dfs.append(datadf)
+            fin_files+=1
+        except:
+            pass
+    numfiles=fin_files
+    datadf = pd.concat(dfs,ignore_index=True)
+    stuff = [
+        "fidelity_to_ideal",
+        "fidelity_to_exact",
+        "ideal_forces_el",
+        "ideal_forces_nuc",
+        "ideal_tot_forces",
+        "ideal_velocities",
+        "ideal_positions",
+        "ideal_energy_el",
+        "ideal_energy_Tnuc",
+        "ideal_energy_Vnuc",
+        "exact_forces_el",
+        "exact_forces_nuc",
+        "exact_tot_forces",
+        "exact_velocities",
+        "exact_positions",
+        "exact_energy_el",
+        "exact_energy_Tnuc",
+        "exact_energy_Vnuc",
+        "QC_forces_el",
+        "QC_forces_nuc",
+        "QC_tot_forces",
+        "QC_velocities",
+        "QC_positions",
+        "QC_energy_el",
+        "QC_energy_Tnuc",
+        "QC_energy_Vnuc",
+        "force",
+        "err_force",
+        "energy",
+        "err_energy",
+        "init_F",
+        "final_F",
+        "err_init_F",
+        "err_fin_F",
+        "iter_number",
+        "times",
+    ]
+
+    store = {i: [] for i in stuff}
+    store["sample"] = []
+
+    for i in range(numfiles):
+        for j in stuff:
+            store[j].extend(results[i][j][0:max_times])
+            # print(len(store[j]))
+        store["sample"].extend([i] * max_times)
+    # print(len(store["sample"]))
+
+    df = pd.DataFrame(store)
+    df["diff_ideal_exact"] = np.abs(df["fidelity_to_exact"] - df["fidelity_to_ideal"])
+    df['QC_energy'] = df['QC_energy_el']+df['QC_energy_Vnuc']+df['QC_energy_Tnuc']
+    df['ideal_energy'] = df['ideal_energy_el']+df['ideal_energy_Vnuc']+df['ideal_energy_Tnuc']
+    df['exact_energy'] = df['exact_energy_el']+df['exact_energy_Vnuc']+df['exact_energy_Tnuc']
+
+    coeff_names  ={'exact_coefficients':'Exact',
+    'ideal_coefficients':'Ideal',
+    'QC_coefficients': 'TDVQP'}
+
+    store_coef = {coeff_names[i]: [] for i in coeff_names}
+    store_coef['Time'] = []
+    store_coef['State'] = []
+    store_coef["Sample"] = []
+    for i in range(numfiles):
+        for j in coeff_names:
+            for k, res in enumerate(results[i][j][0:max_times]):        
+                store_coef[coeff_names[j]].extend(res[0:15]) # only really need highest 5 populations even in larger simulations with superpositions.
+                if j == 'exact_coefficients':
+                    store_coef['Time'].extend([results[i]['times'][k]]*15)
+                    store_coef["Sample"].extend([i] * 15)
+                    store_coef['State'].extend(list(range(15)))
+                    
+    df_coef = pd.DataFrame(store_coef).melt(id_vars=('Time','State','Sample'),value_name='Population',var_name='Type')
+    df['Simulation'] = 'Superposition'
+    df_coef['Simulation'] = 'Superposition'
+
+    numfiles = 502
+    max_times =700
+    results = []
+    dfs = []
+    fin_files = 0
+    for i in range(0, numfiles):
+        try:
+            file = f"results_incomplete/mixed2/first_excited_{i}.json"
+            #file = f"results/unknown/trycorrect{i}.json"
+            data = json.load(open(file))
+            results.append(data)
+            for j in ['QC','ideal','exact']:
+                datadf = pd.DataFrame(data[f'{j}_coefficients'])
+                datadf=datadf.reset_index()
+                datadf = datadf.melt(id_vars='index',var_name='Adiabatic state',value_name='Population')
+                datadf['Setup:'] = f'{j}'
+                datadf['sample'] = i
+                datadf['Time'] = datadf['index']*data['dt']
+                dfs.append(datadf)
+            fin_files+=1
+        except:
+            pass
+    numfiles=fin_files
+    datadf = pd.concat(dfs,ignore_index=True)
+    stuff = [
+        "fidelity_to_ideal",
+        "fidelity_to_exact",
+        "ideal_forces_el",
+        "ideal_forces_nuc",
+        "ideal_tot_forces",
+        "ideal_velocities",
+        "ideal_positions",
+        "ideal_energy_el",
+        "ideal_energy_Tnuc",
+        "ideal_energy_Vnuc",
+        "exact_forces_el",
+        "exact_forces_nuc",
+        "exact_tot_forces",
+        "exact_velocities",
+        "exact_positions",
+        "exact_energy_el",
+        "exact_energy_Tnuc",
+        "exact_energy_Vnuc",
+        "QC_forces_el",
+        "QC_forces_nuc",
+        "QC_tot_forces",
+        "QC_velocities",
+        "QC_positions",
+        "QC_energy_el",
+        "QC_energy_Tnuc",
+        "QC_energy_Vnuc",
+        "force",
+        "err_force",
+        "energy",
+        "err_energy",
+        "init_F",
+        "final_F",
+        "err_init_F",
+        "err_fin_F",
+        "iter_number",
+        "times",
+    ]
+
+    store = {i: [] for i in stuff}
+    store["sample"] = []
+
+    for i in range(numfiles):
+        for j in stuff:
+            store[j].extend(results[i][j][0:max_times])
+        store["sample"].extend([i] * max_times)
+
+    df2 = pd.DataFrame(store)
+    df2["diff_ideal_exact"] = np.abs(df2["fidelity_to_exact"] - df2["fidelity_to_ideal"])
+    df2['QC_energy'] = df2['QC_energy_el']+df2['QC_energy_Vnuc']+df2['QC_energy_Tnuc']
+    df2['ideal_energy'] = df2['ideal_energy_el']+df2['ideal_energy_Vnuc']+df2['ideal_energy_Tnuc']
+    df2['exact_energy'] = df2['exact_energy_el']+df2['exact_energy_Vnuc']+df2['exact_energy_Tnuc']
+
+    coeff_names  ={'exact_coefficients':'Exact',
+    'ideal_coefficients':'Ideal',
+    'QC_coefficients': 'TDVQP'}
+
+    store_coef = {coeff_names[i]: [] for i in coeff_names}
+    store_coef['Time'] = []
+    store_coef['State'] = []
+    store_coef["Sample"] = []
+    for i in range(numfiles):
+        for j in coeff_names:
+            for k, res in enumerate(results[i][j][0:max_times]):        
+                store_coef[coeff_names[j]].extend(res[0:15]) # only really need highest 5 populations even in larger simulations with superpositions.
+                if j == 'exact_coefficients':
+                    store_coef['Time'].extend([results[i]['times'][k]]*15)
+                    store_coef["Sample"].extend([i] * 15)
+                    store_coef['State'].extend(list(range(15)))
+                    
+    df_coef2 = pd.DataFrame(store_coef).melt(id_vars=('Time','State','Sample'),value_name='Population',var_name='Type')
+    df2['Simulation'] = 'Excited'
+    df_coef2['Simulation'] = 'Excited'
+
+    df = pd.concat([df,df2])
+    df_coef = pd.concat([df_coef,df_coef2])
+    return df, df_coef
